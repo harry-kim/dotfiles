@@ -1,5 +1,5 @@
 execute pathogen#infect()
-"autocmd vimenter * NERDTree
+" autocmd vimenter * NERDTree
 
 syntax on
 filetype plugin indent on
@@ -12,9 +12,32 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set colorcolumn=80
+set autoread "auto load changed files
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
 
 map <C-e> :NERDTreeToggle<CR>
 "set nofoldenable    " disable folding
+set foldmethod=indent
+nnoremap <space> za
+vnoremap <space> zf
 set tags=ctags;
 map <f12> :!ctags -R -f ctags .
 
@@ -32,7 +55,7 @@ set hidden
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
-nmap <leader>T :enew<cr>
+nmap <leader>bn :enew<cr>
 
 " Move to the next buffer
 nmap <Tab> :bnext<CR>
