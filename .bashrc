@@ -3,12 +3,12 @@
 #######################################################a
 FULL_NAME="Harry Kim"
 EMAIL="hkim@securitycompass.com"
-GIT_BASE="${HOME}/ghar/dotfiles"
+GIT_BASE="${HOME}"
 
 # On mac we use vim installed with Cellar/Brew
 # We also want to change the default Java if present
 if [ `echo "${OSTYPE}" | grep 'darwin'` ]; then
-    alias vim=/usr/local/bin/vim
+    alias vim=/usr/bin/vim
     #export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_60`
 fi
 
@@ -19,8 +19,12 @@ export PATH=${PATH}:~/bin:${GIT_BASE}/ghar/bin
 ${GIT_BASE}/ghar/ghar-bash-completion.sh
 
 # Use proper prompts for RHEL/Centos/Fedora boxes
+parse_git_branch ()
+{
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
 export PROMPT_COMMAND='printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME}" "${PWD/#$HOME/~}"'
-PS1='\[\033[01;32m\]\u@\H:\[\033[01;34m\]\w\$\[\033[00m\] '
+PS1='\[\033[01;32m\]\u@\H:\[\033[01;34m\]\w\$\[\033[00m\] $(parse_git_branch) \[\033[01;34m\] \$'
 
 # Some aliases
 alias vi=vim
@@ -36,12 +40,6 @@ git config --global credential.helper cache # Set git to use the credential memo
 git config --global credential.helper 'cache --timeout=3600' # Set the cache to timeout after 1 hour (setting is in seconds)
 git config --global core.editor vim
 git config --global push.default simple
-
-# Ubuntu maintainer config
-BZR_EDITOR="vim"
-if which bzr > /dev/null; then
-    bzr launchpad-login antevens
-fi
 
 # Ghar, store dotfiles in GIT
 # Pull latest on each login
