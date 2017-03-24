@@ -26,9 +26,6 @@ parse_git_branch ()
 export PROMPT_COMMAND='printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME}" "${PWD/#$HOME/~}"'
 PS1='\[\033[01;32m\]\u@\H:\[\033[01;34m\]\w\$\[\033[00m\] $(parse_git_branch) \[\033[01;34m\] \$'
 
-# Some aliases
-alias vi=vim
-
 # Set colors for ls and CLI on Mac
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
@@ -63,7 +60,34 @@ fi
 # if [ -d "${venv}" ]; then
 #     source "${venv}/bin/activate"
 # fi
+source /usr/local/bin/virtualenvwrapper.sh
 
 # Make sure SSH Agent forwarding is enables for linux
 key_file=~/.ssh/id_rsa
 [[ -z $(ssh-add -L | grep $key_file) ]] && ssh-add $key_file
+
+
+# Aliases
+alias dj='python manage.py'
+alias djangocode='cd ~/local/envs/sdlc/lib/python2.6/site-packages/django/'
+alias djbuild='python manage.py build_large_deployment_data'
+alias djc='python manage.py collectstatic --noinput'
+alias djcelery='python manage.py celeryd --autoreload --purge'
+alias djgun='python manage.py run_gunicorn --settings=gunicorn_settings -b 0.0.0.0'
+alias djmigrate='python manage.py migrate'
+alias djrun='python manage.py runserver localhost:3000'
+alias djschema='python manage.py schemamigration --auto'
+alias djshell='python manage.py shell'
+alias djsync='python manage.py syncdb'
+alias djtest='python manage.py test --settings=test_local_settings --nomigrations --keepdb'
+alias djtestdb='python manage.py test --settings=test_local_settings --nomigrations'
+alias dumpdata='python manage.py dumpdata'
+alias emailserver='python -m smtpd -n -c DebuggingServer localhost:1025'
+alias flush_dns_cache='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+alias imgcat='/Users/hkim/.iterm2/imgcat'
+alias it2dl='/Users/hkim/.iterm2/it2dl'
+alias loaddata='python manage.py loaddata'
+alias prettyjson='python -m json.tool | pygmentize -l javascript'
+alias rmpyc='find . -name "*.pyc" -exec rm -rf {} \;'
+alias start_celery='celery -A . worker --app=sigma.celery_mod -l debug'
+alias vi='vim'
