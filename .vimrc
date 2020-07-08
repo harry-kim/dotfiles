@@ -1,80 +1,69 @@
 execute pathogen#infect()
-" autocmd vimenter * NERDTree
+execute pathogen#helptags()
+
+"call plug#begin('~/.vim/plugged')
+"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+"call plug#end()
 
 syntax on
 filetype plugin indent on
-set guifont=Monaco:h14
+
+colorscheme gruvbox
+set number "relativenumber
 set background=dark
-set number
-colorscheme solarized
-filetype indent on
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set colorcolumn=80
-set autoread "auto load changed files
 
-" Ignore case when searching
-set ignorecase
-
-" When searching try to be smart about cases
-set smartcase
-
-" Highlight search results
-set hlsearch
-
-" Makes search act like search in modern browsers
-set incsearch
-
-" Show matching brackets when text indicator is over them
-set showmatch
-
-" How many tenths of a second to blink when matching brackets
-set mat=2
+"augroup numbertoggle
+"  autocmd!
+"  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+"  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+"augroup END
 
 
-map <C-e> :NERDTreeToggle<CR>
-"set nofoldenable    " disable folding
-set foldmethod=indent
-nnoremap <space> za
-vnoremap <space> zf
-set tags=ctags;
-map <f12> :!ctags -R -f ctags .
+" Coc Binds
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Enable the list of buffers
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+let g:coc_node_path = '/usr/local/n/versions/node/13.1.0/bin/node'
+
+
+" Indenting
+filetype plugin indent on
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
+autocmd FileType javascript.jsx setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType scss setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType json setlocal tabstop=2 shiftwidth=2 softtabstop=2
+
+"Fuzzy finder
+set rtp+=/usr/local/opt/fzf
+nnoremap <C-f> :FZF<Cr>
+
+" vim-airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
-
-" This allows buffers to be hidden if you've modified a buffer.
-" This is almost a must if you wish to use buffers in this way.
-set hidden
-
-" To open a new empty buffer
-" This replaces :tabnew which I used to bind to this mapping
-nmap <leader>bn :enew<cr>
-
-" Move to the next buffer
+"Buffer switching
 nmap <Tab> :bnext<CR>
-
-" Move to the previous buffer
 nmap <S-Tab> :bprevious<CR>
 
-" Close the current buffer and move to the previous one
-" This replicates the idea of closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR>
-" Show all open buffers and their status
-nmap <leader>bl :ls<CR>
+set tabstop=4
+set shiftwidth=4
 
-
-" vim-test
-" let test#strategy = "iterm"
-let test#python#djangotest#options = '--settings=test_local_settings --nomigrations'
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
+set colorcolumn=80
